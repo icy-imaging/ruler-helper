@@ -1,7 +1,3 @@
-/**
- * by Fabrice de Chaumont
- */
-
 package plugins.fab.Ruler;
 
 import icy.canvas.IcyCanvas;
@@ -13,20 +9,20 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 
-public class Anchor2DTarget extends Anchor2D
-{
+/**
+ * @author Fabrice de Chaumont
+ */
+public class Anchor2DTarget extends Anchor2D {
 
     Line2D line1 = new Line2D.Double();
     Line2D line2 = new Line2D.Double();
 
-    public Anchor2DTarget(double x, double y)
-    {
+    public Anchor2DTarget(double x, double y) {
         super(x, y);
     }
 
     @Override
-    public void paint(Graphics2D g, Sequence sequence, IcyCanvas canvas)
-    {
+    public void paint(Graphics2D g, Sequence sequence, IcyCanvas canvas) {
 
         if (!visible)
             return;
@@ -37,24 +33,20 @@ public class Anchor2DTarget extends Anchor2D
         BasicStroke strokeSubLine = new BasicStroke((float) canvas.canvasToImageLogDeltaX(1));
 
         g.setStroke(strokeMainLine);
-        if (selected)
-        {
+        if (selected) {
             g.setColor(Color.yellow);
         }
-        else
-        {
+        else {
             g.setColor(Color.black);
         }
         g.draw(line1);
         g.draw(line2);
 
         g.setStroke(strokeSubLine);
-        if (selected)
-        {
+        if (selected) {
             g.setColor(Color.yellow);
         }
-        else
-        {
+        else {
             g.setColor(Color.white);
         }
         g.draw(line1);
@@ -62,8 +54,7 @@ public class Anchor2DTarget extends Anchor2D
 
     }
 
-    void updateGeometry(IcyCanvas canvas)
-    {
+    void updateGeometry(IcyCanvas canvas) {
         final double adjRayX = canvas.canvasToImageLogDeltaX(ray);
         final double adjRayY = canvas.canvasToImageLogDeltaY(ray);
 
