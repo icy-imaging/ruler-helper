@@ -1,3 +1,21 @@
+/*
+ * Copyright (c) 2010-2023. Institut Pasteur.
+ *
+ * This file is part of Icy.
+ * Icy is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Icy is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Icy. If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package plugins.fab.Ruler;
 
 import icy.canvas.Canvas2D;
@@ -5,16 +23,14 @@ import icy.canvas.IcyCanvas;
 import icy.main.Icy;
 import icy.math.UnitUtil;
 import icy.math.UnitUtil.UnitPrefix;
-import icy.painter.*;
+import icy.painter.Overlay;
+import icy.painter.OverlayEvent;
+import icy.painter.OverlayListener;
 import icy.sequence.Sequence;
 import icy.type.point.Point5D;
 import icy.util.GraphicsUtil;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
@@ -38,22 +54,22 @@ public class RulerPainter extends Overlay implements OverlayListener {
 
 
     @Override
-    public void overlayChanged(OverlayEvent overlayEvent) {
-        for (Sequence sequence : Icy.getMainInterface().getSequencesContaining(this)) {
+    public void overlayChanged(final OverlayEvent overlayEvent) {
+        for (final Sequence sequence : Icy.getMainInterface().getSequencesContaining(this)) {
             sequence.overlayChanged(this);
         }
     }
 
-    int findBestMajTickSpace(int sliderSize, int delta) {
+    int findBestMajTickSpace(final int sliderSize, final int delta) {
 
         final int[] values = {5, 10, 20, 50, 100, 200, 250, 500, 1000, 2000, 2500, 5000};
 
-        int wantedMajTickSpace;
+        final int wantedMajTickSpace;
         // wanted a major tick each ~40 pixels
         try {
             wantedMajTickSpace = delta / (sliderSize / 40);
         }
-        catch (ArithmeticException e) {
+        catch (final ArithmeticException e) {
             return values[0];
         }
 
@@ -61,7 +77,7 @@ public class RulerPainter extends Overlay implements OverlayListener {
         int bestValue = 5;
 
         // try with our predefined values
-        for (int value : values) {
+        for (final int value : values) {
             final int dx = Math.abs(value - wantedMajTickSpace);
 
             if (dx < min) {
@@ -76,19 +92,19 @@ public class RulerPainter extends Overlay implements OverlayListener {
     // Painter Section:
 
     @Override
-    public void paint(Graphics2D g, Sequence sequence, IcyCanvas canvas) {
+    public void paint(final Graphics2D g, final Sequence sequence, final IcyCanvas canvas) {
         if (g == null)
             return;
         if (!(canvas instanceof Canvas2D))
             return;
 
         if (a1 == null || a2 == null) {
-            Rectangle bounds = g.getClipBounds();
+            final Rectangle bounds = g.getClipBounds();
 
-            int w = bounds.width;
-            int h = bounds.height;
-            int x = bounds.x;
-            int y = bounds.y;
+            final int w = bounds.width;
+            final int h = bounds.height;
+            final int x = bounds.x;
+            final int y = bounds.y;
 
             a1 = new Anchor2DTarget(x + w / 4f, y + h / 2f);
             a2 = new Anchor2DTarget(x + 3f * w / 4f, y + h / 2f);
@@ -98,27 +114,27 @@ public class RulerPainter extends Overlay implements OverlayListener {
             a2.addOverlayListener(this);
         }
 
-        BasicStroke[] stroke = new BasicStroke[4];
+        final BasicStroke[] stroke = new BasicStroke[4];
 
         stroke[0] = new BasicStroke((float) canvas.canvasToImageLogDeltaX(2));
         stroke[1] = new BasicStroke((float) canvas.canvasToImageLogDeltaX(3));
         stroke[2] = new BasicStroke((float) canvas.canvasToImageLogDeltaX(4));
         stroke[3] = new BasicStroke((float) canvas.canvasToImageLogDeltaX(5));
 
-        Line2D line = new Line2D.Double(a1.getPosition(), a2.getPosition());
+        final Line2D line = new Line2D.Double(a1.getPosition(), a2.getPosition());
 
         // transform and display ticks
-        ArrayList<ShapeDefinition> lineDefinitionList = new ArrayList<>();
+        final ArrayList<ShapeDefinition> lineDefinitionList = new ArrayList<>();
 
-        AffineTransform originalTransform = g.getTransform();
+        final AffineTransform originalTransform = g.getTransform();
 
-        double distance = line.getP1().distance(line.getP2());
-        double vx = (line.getP2().getX() - line.getP1().getX()) / distance;
-        double vy = (line.getP2().getY() - line.getP1().getY()) / distance;
+        final double distance = line.getP1().distance(line.getP2());
+        final double vx = (line.getP2().getX() - line.getP1().getX()) / distance;
+        final double vy = (line.getP2().getY() - line.getP1().getY()) / distance;
 
         lineDefinitionList.add(new ShapeDefinition(3, new Line2D.Double(0, 0, distance, 0)));
 
-        int tickSpace = findBestMajTickSpace((int) distance, (int) canvas.canvasToImageDeltaX((int) distance));
+        final int tickSpace = findBestMajTickSpace((int) distance, (int) canvas.canvasToImageDeltaX((int) distance));
 
         for (int i = 0; i < line.getP1().distance(line.getP2()); i++) {
             if (i % tickSpace == 0) {
@@ -137,26 +153,26 @@ public class RulerPainter extends Overlay implements OverlayListener {
             g.rotate(Math.PI, distance / 2, 0);
 
         g.setColor(Color.black);
-        for (ShapeDefinition ld : lineDefinitionList) {
+        for (final ShapeDefinition ld : lineDefinitionList) {
             g.setStroke(stroke[ld.stroke]);
             g.draw(ld.shape);
         }
 
         g.setColor(Color.white);
-        for (ShapeDefinition ld : lineDefinitionList) {
+        for (final ShapeDefinition ld : lineDefinitionList) {
             g.setStroke(stroke[ld.stroke - 1]);
             g.draw(ld.shape);
         }
 
         // draw text
 
-        int fontSize = (int) convertScale(canvas, 20);
+        final int fontSize = (int) convertScale(canvas, 20);
 
-        Font font = new Font("Arial", Font.PLAIN, fontSize);
-        String pixelString;
-        double realDistance = Math.sqrt((Math.pow(vx * distance * sequence.getPixelSizeX(), 2) + Math.pow(vy * distance * sequence.getPixelSizeY(), 2)));
+        final Font font = new Font("Arial", Font.PLAIN, fontSize);
+        final String pixelString;
+        final double realDistance = Math.sqrt((Math.pow(vx * distance * sequence.getPixelSizeX(), 2) + Math.pow(vy * distance * sequence.getPixelSizeY(), 2)));
         pixelString = " " + (int) distance + " px" + " / " + UnitUtil.getBestUnitInMeters(realDistance, 2, UnitPrefix.MICRO);
-        Rectangle2D pixelBounds = GraphicsUtil.getStringBounds(g, font, pixelString);
+        final Rectangle2D pixelBounds = GraphicsUtil.getStringBounds(g, font, pixelString);
         g.translate(distance / 2 - pixelBounds.getWidth() / 2, -convertScale(canvas, 20));
         g.setFont(font);
         g.setColor(Color.white);
@@ -174,12 +190,12 @@ public class RulerPainter extends Overlay implements OverlayListener {
         a2.paint(g, sequence, canvas);
     }
 
-    double convertScale(IcyCanvas canvas, int value) {
+    double convertScale(final IcyCanvas canvas, final int value) {
         return canvas.canvasToImageLogDeltaX(value);
     }
 
     @Override
-    public void mousePressed(MouseEvent e, Point5D.Double imagePoint, IcyCanvas canvas) {
+    public void mousePressed(final MouseEvent e, final Point5D.Double imagePoint, final IcyCanvas canvas) {
         if (a1 == null || a2 == null)
             return;
         a1.mousePressed(e, imagePoint, canvas);
@@ -187,7 +203,7 @@ public class RulerPainter extends Overlay implements OverlayListener {
     }
 
     @Override
-    public void mouseReleased(MouseEvent e, Point5D.Double imagePoint, IcyCanvas canvas) {
+    public void mouseReleased(final MouseEvent e, final Point5D.Double imagePoint, final IcyCanvas canvas) {
         if (a1 == null || a2 == null)
             return;
         a1.mouseReleased(e, imagePoint, canvas);
@@ -195,7 +211,7 @@ public class RulerPainter extends Overlay implements OverlayListener {
     }
 
     @Override
-    public void mouseClick(MouseEvent e, Point5D.Double imagePoint, IcyCanvas canvas) {
+    public void mouseClick(final MouseEvent e, final Point5D.Double imagePoint, final IcyCanvas canvas) {
         if (a1 == null || a2 == null)
             return;
         a1.mouseClick(e, imagePoint, canvas);
@@ -203,7 +219,7 @@ public class RulerPainter extends Overlay implements OverlayListener {
     }
 
     @Override
-    public void mouseMove(MouseEvent e, Point5D.Double imagePoint, IcyCanvas canvas) {
+    public void mouseMove(final MouseEvent e, final Point5D.Double imagePoint, final IcyCanvas canvas) {
         if (a1 == null || a2 == null)
             return;
         a1.mouseMove(e, imagePoint, canvas);
@@ -211,7 +227,7 @@ public class RulerPainter extends Overlay implements OverlayListener {
     }
 
     @Override
-    public void mouseDrag(MouseEvent e, Point5D.Double imagePoint, IcyCanvas canvas) {
+    public void mouseDrag(final MouseEvent e, final Point5D.Double imagePoint, final IcyCanvas canvas) {
         if (a1 == null || a2 == null)
             return;
         a1.mouseDrag(e, imagePoint, canvas);
@@ -219,13 +235,13 @@ public class RulerPainter extends Overlay implements OverlayListener {
     }
 
     @Override
-    public void keyPressed(KeyEvent e, Point5D.Double imagePoint, IcyCanvas canvas) {
+    public void keyPressed(final KeyEvent e, final Point5D.Double imagePoint, final IcyCanvas canvas) {
         if (a1 == null || a2 == null)
             return;
         if (e.getKeyCode() == KeyEvent.VK_DELETE && (a1.isSelected() || a2.isSelected())) {
             // System.out.println(e.getKeyCode());
             // System.out.println(e);
-            for (Sequence sequence : Icy.getMainInterface().getSequencesContaining(this)) {
+            for (final Sequence sequence : Icy.getMainInterface().getSequencesContaining(this)) {
                 sequence.removeOverlay(this);
             }
         }
@@ -235,7 +251,7 @@ public class RulerPainter extends Overlay implements OverlayListener {
     }
 
     @Override
-    public void keyReleased(KeyEvent e, Point5D.Double imagePoint, IcyCanvas canvas) {
+    public void keyReleased(final KeyEvent e, final Point5D.Double imagePoint, final IcyCanvas canvas) {
         if (a1 == null || a2 == null)
             return;
         a1.keyReleased(e, imagePoint, canvas);
