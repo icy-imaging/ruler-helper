@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2023. Institut Pasteur.
+ * Copyright (c) 2010-2024. Institut Pasteur.
  *
  * This file is part of Icy.
  * Icy is free software: you can redistribute it and/or modify
@@ -18,18 +18,20 @@
 
 package plugins.fab.Ruler;
 
-import icy.gui.dialog.MessageDialog;
-import icy.plugin.abstract_.PluginActionable;
-import icy.sequence.Sequence;
+import org.bioimageanalysis.icy.extension.plugin.abstract_.PluginActionable;
+import org.bioimageanalysis.icy.extension.plugin.annotation_.IcyPluginIcon;
+import org.bioimageanalysis.icy.extension.plugin.annotation_.IcyPluginName;
+import org.bioimageanalysis.icy.gui.dialog.MessageDialog;
+import org.bioimageanalysis.icy.model.sequence.Sequence;
 
 /**
  * @author Fabrice de Chaumont
  */
+@IcyPluginName("Ruler Helper")
+@IcyPluginIcon(path = "/ruler-helper.png")
 public class Ruler extends PluginActionable {
-
     @Override
     public void run() {
-
         final Sequence sequence = getActiveSequence();
 
         if (sequence != null) {
@@ -38,7 +40,5 @@ public class Ruler extends PluginActionable {
         else {
             MessageDialog.showDialog("Please open an image first.", MessageDialog.INFORMATION_MESSAGE);
         }
-
     }
-
 }

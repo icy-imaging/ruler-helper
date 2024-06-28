@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2023. Institut Pasteur.
+ * Copyright (c) 2010-2024. Institut Pasteur.
  *
  * This file is part of Icy.
  * Icy is free software: you can redistribute it and/or modify
@@ -18,9 +18,10 @@
 
 package plugins.fab.Ruler;
 
-import icy.canvas.IcyCanvas;
-import icy.painter.Anchor2D;
-import icy.sequence.Sequence;
+import org.bioimageanalysis.icy.gui.canvas.IcyCanvas;
+import org.bioimageanalysis.icy.model.overlay.anchor.Anchor2D;
+import org.bioimageanalysis.icy.model.sequence.Sequence;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
@@ -29,7 +30,6 @@ import java.awt.geom.Line2D;
  * @author Fabrice de Chaumont
  */
 public class Anchor2DTarget extends Anchor2D {
-
     Line2D line1 = new Line2D.Double();
     Line2D line2 = new Line2D.Double();
 
@@ -39,7 +39,6 @@ public class Anchor2DTarget extends Anchor2D {
 
     @Override
     public void paint(final Graphics2D g, final Sequence sequence, final IcyCanvas canvas) {
-
         if (!visible)
             return;
 
@@ -67,17 +66,14 @@ public class Anchor2DTarget extends Anchor2D {
         }
         g.draw(line1);
         g.draw(line2);
-
     }
 
-    void updateGeometry(final IcyCanvas canvas) {
+    void updateGeometry(final @NotNull IcyCanvas canvas) {
         final double adjRayX = canvas.canvasToImageLogDeltaX(ray);
         final double adjRayY = canvas.canvasToImageLogDeltaY(ray);
 
         line1.setLine(position.x - adjRayX, position.y, position.x + adjRayX, position.y);
 
         line2.setLine(position.x, position.y - adjRayY, position.x, position.y + adjRayY);
-
     }
-
 }

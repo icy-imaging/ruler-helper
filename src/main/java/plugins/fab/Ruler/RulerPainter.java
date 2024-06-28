@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2023. Institut Pasteur.
+ * Copyright (c) 2010-2024. Institut Pasteur.
  *
  * This file is part of Icy.
  * Icy is free software: you can redistribute it and/or modify
@@ -18,17 +18,17 @@
 
 package plugins.fab.Ruler;
 
-import icy.canvas.Canvas2D;
-import icy.canvas.IcyCanvas;
-import icy.main.Icy;
-import icy.math.UnitUtil;
-import icy.math.UnitUtil.UnitPrefix;
-import icy.painter.Overlay;
-import icy.painter.OverlayEvent;
-import icy.painter.OverlayListener;
-import icy.sequence.Sequence;
-import icy.type.point.Point5D;
-import icy.util.GraphicsUtil;
+import org.bioimageanalysis.icy.Icy;
+import org.bioimageanalysis.icy.common.geom.point.Point5D;
+import org.bioimageanalysis.icy.common.math.UnitUtil;
+import org.bioimageanalysis.icy.gui.GraphicsUtil;
+import org.bioimageanalysis.icy.gui.canvas.Canvas2D;
+import org.bioimageanalysis.icy.gui.canvas.IcyCanvas;
+import org.bioimageanalysis.icy.model.overlay.Overlay;
+import org.bioimageanalysis.icy.model.overlay.OverlayEvent;
+import org.bioimageanalysis.icy.model.overlay.OverlayListener;
+import org.bioimageanalysis.icy.model.sequence.Sequence;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -42,7 +42,6 @@ import java.util.ArrayList;
  * @author Fabrice de Chaumont
  */
 public class RulerPainter extends Overlay implements OverlayListener {
-
     private Anchor2DTarget a1;
     private Anchor2DTarget a2;
 
@@ -51,7 +50,6 @@ public class RulerPainter extends Overlay implements OverlayListener {
     }
 
     // Listener of Anchor
-
 
     @Override
     public void overlayChanged(final OverlayEvent overlayEvent) {
@@ -171,7 +169,7 @@ public class RulerPainter extends Overlay implements OverlayListener {
         final Font font = new Font("Arial", Font.PLAIN, fontSize);
         final String pixelString;
         final double realDistance = Math.sqrt((Math.pow(vx * distance * sequence.getPixelSizeX(), 2) + Math.pow(vy * distance * sequence.getPixelSizeY(), 2)));
-        pixelString = " " + (int) distance + " px" + " / " + UnitUtil.getBestUnitInMeters(realDistance, 2, UnitPrefix.MICRO);
+        pixelString = " " + (int) distance + " px" + " / " + UnitUtil.getBestUnitInMeters(realDistance, 2, UnitUtil.UnitPrefix.MICRO);
         final Rectangle2D pixelBounds = GraphicsUtil.getStringBounds(g, font, pixelString);
         g.translate(distance / 2 - pixelBounds.getWidth() / 2, -convertScale(canvas, 20));
         g.setFont(font);
@@ -190,7 +188,7 @@ public class RulerPainter extends Overlay implements OverlayListener {
         a2.paint(g, sequence, canvas);
     }
 
-    double convertScale(final IcyCanvas canvas, final int value) {
+    double convertScale(final @NotNull IcyCanvas canvas, final int value) {
         return canvas.canvasToImageLogDeltaX(value);
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2023. Institut Pasteur.
+ * Copyright (c) 2010-2024. Institut Pasteur.
  *
  * This file is part of Icy.
  * Icy is free software: you can redistribute it and/or modify
@@ -18,25 +18,27 @@
 
 package plugins.fab.Ruler;
 
+import org.jetbrains.annotations.Contract;
+
 import java.awt.*;
 
 /**
  * @author Fabrice de Chaumont
  */
 public class ShapeDefinition {
-
     public int stroke;
     public Shape shape;
     public float alpha = 1;
 
+    @Contract(pure = true)
     public ShapeDefinition(final int stroke, final Shape shape) {
         this.stroke = stroke;
         this.shape = shape;
     }
 
+    @Contract(pure = true)
     public ShapeDefinition(final int stroke, final Shape shape, final float alpha) {
         this(stroke, shape);
         this.alpha = alpha;
     }
-
 }
