@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2024. Institut Pasteur.
+ * Copyright (c) 2010-2026. Institut Pasteur.
  *
  * This file is part of Icy.
  * Icy is free software: you can redistribute it and/or modify
@@ -19,7 +19,6 @@
 package plugins.fab.Ruler;
 
 import org.bioimageanalysis.icy.extension.plugin.abstract_.PluginActionable;
-import org.bioimageanalysis.icy.extension.plugin.annotation_.IcyPluginIcon;
 import org.bioimageanalysis.icy.extension.plugin.annotation_.IcyPluginName;
 import org.bioimageanalysis.icy.gui.dialog.MessageDialog;
 import org.bioimageanalysis.icy.model.sequence.Sequence;
@@ -28,7 +27,6 @@ import org.bioimageanalysis.icy.model.sequence.Sequence;
  * @author Fabrice de Chaumont
  */
 @IcyPluginName("Ruler Helper")
-@IcyPluginIcon(path = "/ruler-helper.png")
 public class Ruler extends PluginActionable {
     @Override
     public void run() {
