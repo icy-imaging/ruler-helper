@@ -18,10 +18,10 @@
 
 package plugins.fab.Ruler;
 
-import org.bioimageanalysis.icy.extension.plugin.abstract_.PluginActionable;
-import org.bioimageanalysis.icy.extension.plugin.annotation_.IcyPluginName;
-import org.bioimageanalysis.icy.gui.dialog.MessageDialog;
-import org.bioimageanalysis.icy.model.sequence.Sequence;
+import fr.icy.extension.plugin.abstract_.PluginActionable;
+import fr.icy.extension.plugin.annotation_.IcyPluginName;
+import fr.icy.gui.dialog.MessageDialog;
+import fr.icy.model.sequence.Sequence;
 
 /**
  * @author Fabrice de Chaumont

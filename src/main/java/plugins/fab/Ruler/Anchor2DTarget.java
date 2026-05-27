@@ -18,9 +18,9 @@
 
 package plugins.fab.Ruler;
 
-import org.bioimageanalysis.icy.gui.canvas.IcyCanvas;
-import org.bioimageanalysis.icy.model.overlay.anchor.Anchor2D;
-import org.bioimageanalysis.icy.model.sequence.Sequence;
+import fr.icy.gui.canvas.IcyCanvas;
+import fr.icy.model.overlay.anchor.Anchor2D;
+import fr.icy.model.sequence.Sequence;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
