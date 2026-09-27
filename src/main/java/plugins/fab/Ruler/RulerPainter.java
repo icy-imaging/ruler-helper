@@ -18,6 +18,7 @@
 
 package plugins.fab.Ruler;
 
+import com.formdev.flatlaf.fonts.jetbrains_mono.FlatJetBrainsMonoFont;
 import fr.icy.Icy;
 import fr.icy.common.geom.point.Point5D;
 import fr.icy.common.math.UnitUtil;
@@ -166,7 +167,7 @@ public class RulerPainter extends Overlay implements OverlayListener {
 
         final int fontSize = (int) convertScale(canvas, 20);
 
-        final Font font = new Font("Arial", Font.PLAIN, fontSize);
+        final Font font = new Font(FlatJetBrainsMonoFont.FAMILY, Font.PLAIN, fontSize);
         final String pixelString;
         final double realDistance = Math.sqrt((Math.pow(vx * distance * sequence.getPixelSizeX(), 2) + Math.pow(vy * distance * sequence.getPixelSizeY(), 2)));
         pixelString = " " + (int) distance + " px" + " / " + UnitUtil.getBestUnitInMeters(realDistance, 2, UnitUtil.UnitPrefix.MICRO);

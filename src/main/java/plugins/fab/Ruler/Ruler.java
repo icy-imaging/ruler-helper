@@ -23,6 +23,8 @@ import fr.icy.extension.plugin.annotation_.IcyPluginName;
 import fr.icy.gui.dialog.MessageDialog;
 import fr.icy.model.sequence.Sequence;
 
+import javax.swing.*;
+
 /**
  * @author Fabrice de Chaumont
  */
@@ -36,7 +38,7 @@ public class Ruler extends PluginActionable {
             sequence.addOverlay(new RulerPainter());
         }
         else {
-            MessageDialog.showDialog("Please open an image first.", MessageDialog.INFORMATION_MESSAGE);
+            MessageDialog.showDialog("Please open an image first.", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 }
